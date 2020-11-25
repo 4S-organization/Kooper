@@ -12,22 +12,26 @@ File dataFile;
 
 const int chipSelect = 4;
 
-void setup() {
+void setup()
+{
 	Serial.begin(9600);
 
-	if (!bme280.begin(0x76)) {
+	if (!bme280.begin(0x76))
+	{
 		Serial.println("Could not find a valid BME280 sensor, check wiring!");
 		while (1);
 	}
 
- dataFile = SD.open("data.csv", FILE_WRITE);
- if (dataFile) {
-    dataFile.print("temperature;pressure;humidity");
-  }
+	dataFile = SD.open("data.csv", FILE_WRITE);
+	if (dataFile)
+	{
+		dataFile.print("temperature;pressure;humidity");
+	}
 }
 
-void loop() {
-  String data = String(bme280.readTemperature()) + ";" + String(bme280.readAltitude(SEALEVELPRESSURE_HPA)) + ";" + String(bme280.readHumidity());
-  dataFile.print(data);
+void loop()
+{
+	String data = String(bme280.readTemperature()) + ";" + String(bme280.readAltitude(SEALEVELPRESSURE_HPA)) + ";" + String(bme280.readHumidity());
+	dataFile.print(data);
 	delay(1000);
 }

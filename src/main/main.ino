@@ -1,10 +1,16 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include <SPI.h>
+#include <SD.h>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme280;
+
+File dataFile;
+
+const int chipSelect = 4;
 
 void setup() {
 	Serial.begin(9600);
@@ -13,25 +19,15 @@ void setup() {
 		Serial.println("Could not find a valid BME280 sensor, check wiring!");
 		while (1);
 	}
+
+ dataFile = SD.open("data.csv", FILE_WRITE);
+ if (dataFile) {
+    dataFile.print("temperature;pressure;humidity");
+  }
 }
 
 void loop() {
-	Serial.print("Temperature = ");
-	Serial.print(bme280.readTemperature());
-	Serial.println("*C");
-
-	Serial.print("Pressure = ");
-	Serial.print(bme280.readPressure() / 100.0F);
-	Serial.println("hPa");
-
-	Serial.print("Approx. Altitude = ");
-	Serial.print(bme280.readAltitude(SEALEVELPRESSURE_HPA));
-	Serial.println("m");
-
-	Serial.print("Humidity = ");
-	Serial.print(bme280.readHumidity());
-	Serial.println("%");
-
-	Serial.println();
+  String data = String(bme280.readTemperature()) + ";" + String(bme280.readAltitude(SEALEVELPRESSURE_HPA)) + ";" + String(bme280.readHumidity());
+  dataFile.print(data);
 	delay(1000);
 }

@@ -4,7 +4,6 @@
 #include <SPI.h>
 #include <SD.h>
 
-#define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme280;
 
@@ -31,7 +30,7 @@ void setup()
 
 void loop()
 {
-	String data = String(bme280.readTemperature()) + ";" + String(bme280.readAltitude(SEALEVELPRESSURE_HPA)) + ";" + String(bme280.readHumidity());
+	String data = String(bme280.readTemperature()) + ";" + String(bme280.readPressure()) + ";" + String(bme280.readHumidity());
 	dataFile.print(data);
 	delay(1000);
 }

@@ -39,19 +39,22 @@ void setup()
 
 void loop()
 {
+  Serial.println(distanceSM());
+	String data = String(bme280.readTemperature()) + ";" + String(bme280.readPressure()) + ";" + String(bme280.readHumidity());
+	dataFile.print(data);
+	delay(1000);
+}
+
+
+float distanceSM() {
+  float v = 331.5+0.6*20;
   digitalWrite(PIN_TRIG, LOW);
   delayMicroseconds(5);
   digitalWrite(PIN_TRIG, HIGH);
   delayMicroseconds(10);
   digitalWrite(PIN_TRIG, LOW);
 
-  duration = pulseIn(PIN_ECHO, HIGH);
-  cm = (duration / 2) / 29.1;
-
-  Serial.print(cm);
-  Serial.println(" sm");
-  
-	String data = String(bme280.readTemperature()) + ";" + String(bme280.readPressure()) + ";" + String(bme280.readHumidity());
-	dataFile.print(data);
-	delay(1000);
+  float duration = pulseIn(PIN_ECHO, HIGH);
+  duration = duration/1000.0/1000.0/2;
+  return duration* v*100;
 }

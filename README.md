@@ -1,6 +1,8 @@
 # Kooper
 
 __Satellite for exploration of the planet "Uranus" and its satellites__
+![](assets/kooper.png)
+
 
 <a>
 	<h2>Uranus</h2>
